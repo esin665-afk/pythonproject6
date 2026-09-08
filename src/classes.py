@@ -13,7 +13,7 @@ class Product:
     Атрибуты:
         name (str): Название товара
         description (str): Описание товара
-        _price (float): Приватная цена товара (с копейками)
+        __price (float): Приватная цена товара (с копейками)
         quantity (int): Количество товара в наличии (в штуках)
     """
 
@@ -39,13 +39,13 @@ class Product:
 
         self.name = name
         self.description = description
-        self._price = price
+        self.__price = price
         self.quantity = quantity
 
     @property
     def price(self) -> float:
         """Геттер для получения цены товара."""
-        return self._price
+        return self.__price
 
     @price.setter
     def price(self, value: float) -> None:
@@ -60,7 +60,7 @@ class Product:
         if value <= 0:
             print("Цена не должна быть нулевая или отрицательная")
         else:
-            self._price = value
+            self.__price = value
 
     @classmethod
     def new_product(
@@ -92,7 +92,7 @@ class Category:
     Атрибуты экземпляра:
         name (str): Название категории
         description (str): Описание категории
-        _products (List[Product]): Приватный список товаров в категории
+        __products (List[Product]): Приватный список товаров в категории
     """
 
     category_count: int = 0
@@ -111,10 +111,10 @@ class Category:
         """
         self.name = name
         self.description = description
-        self._products = products if products is not None else []
+        self.__products = products if products is not None else []
 
         Category.category_count += 1
-        Category.product_count += len(self._products)
+        Category.product_count += len(self.__products)
 
     def add_product(self, product: Product) -> None:
         """
@@ -123,7 +123,7 @@ class Category:
         Args:
             product: Объект Product для добавления
         """
-        self._products.append(product)
+        self.__products.append(product)
         Category.product_count += 1
 
     def average_price(self) -> float:
@@ -136,11 +136,11 @@ class Category:
         Raises:
             ValueError: Если в категории нет товаров
         """
-        if not self._products:
+        if not self.__products:
             raise ValueError("Нет товаров в категории для расчета средней цены")
 
-        total_price = sum(product.price for product in self._products)
-        return total_price / len(self._products)
+        total_price = sum(product.price for product in self.__products)
+        return total_price / len(self.__products)
 
     @property
     def products(self) -> str:
@@ -151,11 +151,11 @@ class Category:
             str: Строка с информацией о товарах в формате:
                  "Название продукта, X руб. Остаток: Y шт."
         """
-        if not self._products:
+        if not self.__products:
             return "В категории нет товаров"
 
         result = []
-        for product in self._products:
+        for product in self.__products:
             result.append(
                 f"{product.name}, {product.price} руб. Остаток: {product.quantity} шт."
             )
