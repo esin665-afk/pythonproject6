@@ -58,14 +58,18 @@ class TestProduct:
         assert sample_product.price == 100.0
 
     def test_product_new_product_class_method(self):
-        """Тест класс-метода new_product."""
-        product = Product.new_product(
-            "NewPhone", "New smartphone", 50000.0, 15
-        )
+        """Тест класс-метода new_product с передачей словаря."""
+        product_data = {
+            'name': 'NewPhone',
+            'description': 'New smartphone',
+            'price': 50000.0,
+            'quantity': 15
+        }
+        product = Product.new_product(product_data)
 
         assert isinstance(product, Product)
-        assert product.name == "NewPhone"
-        assert product.description == "New smartphone"
+        assert product.name == 'NewPhone'
+        assert product.description == 'New smartphone'
         assert product.price == 50000.0
         assert product.quantity == 15
 
@@ -203,9 +207,13 @@ class TestIntegration:
 
     def test_new_product_and_add_to_category(self):
         """Тест создания товара через new_product и добавления в категорию."""
-        product = Product.new_product(
-            "NewPhone", "Latest model", 70000.0, 20
-        )
+        product_data = {
+            'name': 'NewPhone',
+            'description': 'Latest model',
+            'price': 70000.0,
+            'quantity': 20
+        }
+        product = Product.new_product(product_data)
 
         assert isinstance(product, Product)
         assert product.name == "NewPhone"
@@ -219,3 +227,4 @@ class TestIntegration:
 
         expected = "NewPhone, 70000.0 руб. Остаток: 20 шт."
         assert category.products == expected
+
