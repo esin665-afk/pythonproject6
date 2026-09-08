@@ -47,7 +47,7 @@ class TestProduct:
 
         captured = capsys.readouterr()
         assert "Цена не должна быть нулевая или отрицательная" in captured.out
-        assert sample_product.price == 100.0  # Цена не изменилась
+        assert sample_product.price == 100.0
 
     def test_product_price_setter_zero(self, sample_product, capsys):
         """Тест сеттера цены с нулевым значением."""
@@ -55,7 +55,7 @@ class TestProduct:
 
         captured = capsys.readouterr()
         assert "Цена не должна быть нулевая или отрицательная" in captured.out
-        assert sample_product.price == 100.0  # Цена не изменилась
+        assert sample_product.price == 100.0
 
     def test_product_new_product_class_method(self):
         """Тест класс-метода new_product."""
@@ -77,13 +77,15 @@ class TestCategory:
         """Тест инициализации категории без товаров."""
         assert empty_category.name == "Empty Category"
         assert empty_category.description == "No products"
-        assert empty_category._products == []
+        # Используем name mangling для доступа к приватному атрибуту
+        assert empty_category._Category__products == []
         assert Category.category_count == 1
         assert Category.product_count == 0
 
     def test_category_initialization_with_products(self, sample_category):
         """Тест инициализации категории с товарами."""
-        assert len(sample_category._products) == 3
+        # Используем name mangling для доступа к приватному атрибуту
+        assert len(sample_category._Category__products) == 3
         assert Category.category_count == 1
         assert Category.product_count == 3
 
@@ -113,8 +115,9 @@ class TestCategory:
 
         category.add_product(product)
 
-        assert len(category._products) == 1
-        assert category._products[0] is product
+        # Используем name mangling для доступа к приватному атрибуту
+        assert len(category._Category__products) == 1
+        assert category._Category__products[0] is product
         assert Category.product_count == 1
 
     def test_category_add_multiple_products(self):
@@ -128,7 +131,8 @@ class TestCategory:
         category.add_product(product2)
         category.add_product(product3)
 
-        assert len(category._products) == 3
+        # Используем name mangling для доступа к приватному атрибуту
+        assert len(category._Category__products) == 3
         assert Category.product_count == 3
 
     def test_category_average_price(self, sample_category):
@@ -166,13 +170,13 @@ class TestCategory:
         assert category.products == expected
 
     def test_category_private_products_not_accessible(self):
-        """Тест: к _products нельзя обратиться напрямую как к публичному атрибуту."""
+        """Тест: к __products нельзя обратиться напрямую."""
         category = Category("Test", "Desc")
 
-        # Проверяем, что _products существует, но это приватный атрибут
-        assert hasattr(category, "_products")
-
-        # Проверяем, что нет публичного атрибута products (только property)
+        # Проверяем, что нет атрибута _products
+        assert not hasattr(category, "_products")
+        # Проверяем, что есть __products через name mangling
+        assert hasattr(category, "_Category__products")
         # products - это property, а не список
         assert isinstance(category.products, str)
 
@@ -182,33 +186,23 @@ class TestIntegration:
 
     def test_full_workflow_with_private_attributes(self):
         """Полный рабочий процесс с приватными атрибутами."""
-        # Создаем товары
         product1 = Product("Phone", "Smartphone", 50000.0, 10)
         product2 = Product("Tablet", "Tablet", 30000.0, 5)
 
-        # Создаем категорию
         category = Category("Electronics", "All electronics", [product1])
-
-        # Добавляем товар через метод
         category.add_product(product2)
 
-        # Проверяем через геттер
         expected = (
             "Phone, 50000.0 руб. Остаток: 10 шт.\n"
             "Tablet, 30000.0 руб. Остаток: 5 шт."
         )
         assert category.products == expected
-
-        # Проверяем среднюю цену
         assert category.average_price() == 40000.0
-
-        # Проверяем счетчики
         assert Category.category_count == 1
         assert Category.product_count == 2
 
     def test_new_product_and_add_to_category(self):
         """Тест создания товара через new_product и добавления в категорию."""
-        # Создаем товар через класс-метод
         product = Product.new_product(
             "NewPhone", "Latest model", 70000.0, 20
         )
@@ -216,13 +210,12 @@ class TestIntegration:
         assert isinstance(product, Product)
         assert product.name == "NewPhone"
 
-        # Добавляем в категорию
         category = Category("Smartphones", "All smartphones")
         category.add_product(product)
 
-        assert len(category._products) == 1
+        # Используем name mangling для доступа к приватному атрибуту
+        assert len(category._Category__products) == 1
         assert Category.product_count == 1
 
-        # Проверяем вывод геттера
         expected = "NewPhone, 70000.0 руб. Остаток: 20 шт."
         assert category.products == expected
