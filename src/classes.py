@@ -63,21 +63,20 @@ class Product:
             self.__price = value
 
     @classmethod
-    def new_product(
-        cls, name: str, description: str, price: float, quantity: int
-    ) -> "Product":
+    def new_product(cls, product_data: dict) -> "Product":
         """
-        Класс-метод для создания нового продукта из параметров.
+        Класс-метод для создания продукта из словаря с данными.
 
         Args:
-            name: Название товара
-            description: Описание товара
-            price: Цена товара
-            quantity: Количество на складе
+            product_data (dict): Словарь с ключами 'name', 'description', 'price', 'quantity'
 
         Returns:
             Product: Созданный объект Product
         """
+        name = product_data.get('name')
+        description = product_data.get('description')
+        price = product_data.get('price')
+        quantity = product_data.get('quantity')
         return cls(name, description, price, quantity)
 
 
