@@ -42,6 +42,29 @@ class Product:
         self.__price = price
         self.quantity = quantity
 
+    def __str__(self) -> str:
+        """
+        Строковое представление товара.
+
+        Returns:
+            str: Строка в формате "Название продукта, X руб. Остаток: X шт."
+        """
+        return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
+
+    def __add__(self, other: "Product") -> float:
+        """
+        Магический метод сложения двух товаров.
+
+        Возвращает сумму произведений цены на количество для двух объектов.
+
+        Args:
+            other (Product): Второй товар для сложения
+
+        Returns:
+            float: Общая стоимость двух товаров на складе
+        """
+        return (self.price * self.quantity) + (other.price * other.quantity)
+
     @property
     def price(self) -> float:
         """Геттер для получения цены товара."""
@@ -66,12 +89,6 @@ class Product:
     def new_product(cls, product_data: dict) -> "Product":
         """
         Класс-метод для создания продукта из словаря с данными.
-
-        Args:
-            product_data (dict): Словарь с ключами 'name', 'description', 'price', 'quantity'
-
-        Returns:
-            Product: Созданный объект Product
         """
         name = product_data.get('name')
         description = product_data.get('description')
@@ -115,6 +132,16 @@ class Category:
         Category.category_count += 1
         Category.product_count += len(self.__products)
 
+    def __str__(self) -> str:
+        """
+        Строковое представление категории.
+        """
+        total_quantity = sum(product.quantity for product in self.__products)
+        return (
+            f"{self.name}, количество продуктов: "
+            f"{total_quantity} шт."
+        )
+
     def add_product(self, product: Product) -> None:
         """
         Добавляет товар в категорию.
@@ -155,8 +182,6 @@ class Category:
 
         result = []
         for product in self.__products:
-            result.append(
-                f"{product.name}, {product.price} руб. Остаток: {product.quantity} шт."
-            )
+            result.append(str(product))
 
         return "\n".join(result)
