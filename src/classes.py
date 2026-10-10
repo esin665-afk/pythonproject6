@@ -9,12 +9,6 @@ from typing import List, Optional
 class Product:
     """
     Класс для представления товара.
-
-    Атрибуты:
-        name (str): Название товара
-        description (str): Описание товара
-        __price (float): Приватная цена товара (с копейками)
-        quantity (int): Количество товара в наличии (в штуках)
     """
 
     def __init__(
@@ -22,15 +16,6 @@ class Product:
     ) -> None:
         """
         Инициализация объекта товара с проверкой данных.
-
-        Args:
-            name: Название товара
-            description: Описание товара
-            price: Цена товара (должна быть > 0)
-            quantity: Количество на складе (должно быть >= 0)
-
-        Raises:
-            ValueError: Если цена <= 0 или количество < 0
         """
         if price <= 0:
             raise ValueError("Цена товара должна быть больше 0")
@@ -45,24 +30,18 @@ class Product:
     def __str__(self) -> str:
         """
         Строковое представление товара.
-
-        Returns:
-            str: Строка в формате "Название продукта, X руб. Остаток: X шт."
         """
         return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
 
     def __add__(self, other: "Product") -> float:
         """
         Магический метод сложения двух товаров.
-
-        Возвращает сумму произведений цены на количество для двух объектов.
-
-        Args:
-            other (Product): Второй товар для сложения
-
-        Returns:
-            float: Общая стоимость двух товаров на складе
         """
+        if type(self) is not type(other):
+            raise TypeError(
+                "Нельзя складывать товары разных классов: "
+                f"{type(self).__name__} и {type(other).__name__}"
+            )
         return (self.price * self.quantity) + (other.price * other.quantity)
 
     @property
@@ -74,11 +53,6 @@ class Product:
     def price(self, value: float) -> None:
         """
         Сеттер для установки цены товара с проверкой.
-
-        Args:
-            value: Новая цена товара
-
-        Если цена <= 0, выводит сообщение об ошибке и не меняет цену.
         """
         if value <= 0:
             print("Цена не должна быть нулевая или отрицательная")
@@ -97,18 +71,59 @@ class Product:
         return cls(name, description, price, quantity)
 
 
+class Smartphone(Product):
+    """
+    Класс для представления смартфона.
+    """
+
+    def __init__(
+        self,
+        name: str,
+        description: str,
+        price: float,
+        quantity: int,
+        efficiency: float,
+        model: str,
+        memory: int,
+        color: str,
+    ) -> None:
+        """
+        Инициализация смартфона.
+        """
+        super().__init__(name, description, price, quantity)
+        self.efficiency = efficiency
+        self.model = model
+        self.memory = memory
+        self.color = color
+
+
+class LawnGrass(Product):
+    """
+    Класс для представления газонной травы.
+    """
+
+    def __init__(
+        self,
+        name: str,
+        description: str,
+        price: float,
+        quantity: int,
+        country: str,
+        germination_period: str,
+        color: str,
+    ) -> None:
+        """
+        Инициализация газонной травы.
+        """
+        super().__init__(name, description, price, quantity)
+        self.country = country
+        self.germination_period = germination_period
+        self.color = color
+
+
 class Category:
     """
     Класс для представления категории товаров.
-
-    Атрибуты класса:
-        category_count (int): Общее количество созданных категорий
-        product_count (int): Общее количество товаров во всех категориях
-
-    Атрибуты экземпляра:
-        name (str): Название категории
-        description (str): Описание категории
-        __products (List[Product]): Приватный список товаров в категории
     """
 
     category_count: int = 0
@@ -119,11 +134,6 @@ class Category:
     ) -> None:
         """
         Инициализация категории.
-
-        Args:
-            name: Название категории
-            description: Описание категории
-            products: Список товаров (по умолчанию пустой список)
         """
         self.name = name
         self.description = description
@@ -145,22 +155,18 @@ class Category:
     def add_product(self, product: Product) -> None:
         """
         Добавляет товар в категорию.
-
-        Args:
-            product: Объект Product для добавления
         """
+        if not isinstance(product, Product):
+            raise TypeError(
+                "В категорию можно добавлять только объекты класса "
+                "Product или его наследников"
+            )
         self.__products.append(product)
         Category.product_count += 1
 
     def average_price(self) -> float:
         """
         Рассчитывает среднюю цену товаров в категории.
-
-        Returns:
-            float: Средняя цена товаров в категории
-
-        Raises:
-            ValueError: Если в категории нет товаров
         """
         if not self.__products:
             raise ValueError("Нет товаров в категории для расчета средней цены")
@@ -172,10 +178,6 @@ class Category:
     def products(self) -> str:
         """
         Геттер для получения списка товаров в виде строки.
-
-        Returns:
-            str: Строка с информацией о товарах в формате:
-                 "Название продукта, X руб. Остаток: Y шт."
         """
         if not self.__products:
             return "В категории нет товаров"

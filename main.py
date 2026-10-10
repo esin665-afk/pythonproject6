@@ -1,118 +1,115 @@
 """
-Проверочный файл для демонстрации работы классов.
+Проверочный файл для задания 16.1.
 Запустите: python main.py
 """
 
-from src.classes import Product, Category
+from src.classes import Category, LawnGrass, Smartphone
 
 
-if __name__ == "__main__":
-    print("=" * 60)
-    print("ПРОВЕРКА РАБОТЫ КЛАССОВ PRODUCT И CATEGORY")
-    print("=" * 60)
-
-    # ===== 1. СОЗДАНИЕ ТОВАРОВ =====
-    print("\n1. СОЗДАНИЕ ТОВАРОВ:")
-    print("-" * 60)
-
-    product1 = Product(
+if __name__ == '__main__':
+    smartphone1 = Smartphone(
         "Samsung Galaxy S23 Ultra",
         "256GB, Серый цвет, 200MP камера",
-        180000.0,
-        5
+        180000.0, 5, 95.5, "S23 Ultra", 256, "Серый"
     )
-    print(f"✓ Создан: {product1.name}")
-
-    product2 = Product(
+    smartphone2 = Smartphone(
         "Iphone 15",
         "512GB, Gray space",
-        210000.0,
-        8
+        210000.0, 8, 98.2, "15", 512, "Gray space"
     )
-    print(f"✓ Создан: {product2.name}")
-
-    product3 = Product(
+    smartphone3 = Smartphone(
         "Xiaomi Redmi Note 11",
         "1024GB, Синий",
-        31000.0,
-        14
+        31000.0, 14, 90.3, "Note 11", 1024, "Синий"
     )
-    print(f"✓ Создан: {product3.name}")
 
-    # ===== 2. СОЗДАНИЕ КАТЕГОРИИ =====
-    print("\n2. СОЗДАНИЕ КАТЕГОРИИ:")
-    print("-" * 60)
+    print(smartphone1.name)
+    print(smartphone1.description)
+    print(smartphone1.price)
+    print(smartphone1.quantity)
+    print(smartphone1.efficiency)
+    print(smartphone1.model)
+    print(smartphone1.memory)
+    print(smartphone1.color)
 
-    category1 = Category(
+    print(smartphone2.name)
+    print(smartphone2.description)
+    print(smartphone2.price)
+    print(smartphone2.quantity)
+    print(smartphone2.efficiency)
+    print(smartphone2.model)
+    print(smartphone2.memory)
+    print(smartphone2.color)
+
+    print(smartphone3.name)
+    print(smartphone3.description)
+    print(smartphone3.price)
+    print(smartphone3.quantity)
+    print(smartphone3.efficiency)
+    print(smartphone3.model)
+    print(smartphone3.memory)
+    print(smartphone3.color)
+
+    grass1 = LawnGrass(
+        "Газонная трава",
+        "Элитная трава для газона",
+        500.0, 20, "Россия", "7 дней", "Зеленый"
+    )
+    grass2 = LawnGrass(
+        "Газонная трава 2",
+        "Выносливая трава",
+        450.0, 15, "США", "5 дней", "Темно-зеленый"
+    )
+
+    print(grass1.name)
+    print(grass1.description)
+    print(grass1.price)
+    print(grass1.quantity)
+    print(grass1.country)
+    print(grass1.germination_period)
+    print(grass1.color)
+
+    print(grass2.name)
+    print(grass2.description)
+    print(grass2.price)
+    print(grass2.quantity)
+    print(grass2.country)
+    print(grass2.germination_period)
+    print(grass2.color)
+
+    smartphone_sum = smartphone1 + smartphone2
+    print(smartphone_sum)
+
+    grass_sum = grass1 + grass2
+    print(grass_sum)
+
+    try:
+        invalid_sum = smartphone1 + grass1
+    except TypeError:
+        print("Возникла ошибка TypeError при попытке сложения")
+    else:
+        print("Не возникла ошибка TypeError при попытке сложения")
+
+    category_smartphones = Category(
         "Смартфоны",
-        "Смартфоны, как средство не только коммуникации, но и получения "
-        "дополнительных функций для удобства жизни",
-        [product1, product2, product3]
+        "Высокотехнологичные смартфоны",
+        [smartphone1, smartphone2]
     )
-    print(f"✓ Создана категория: {category1.name}")
-    print(f"  Количество товаров: {len(category1._Category__products)}")
+    category_grass = Category(
+        "Газонная трава",
+        "Различные виды газонной травы",
+        [grass1, grass2]
+    )
 
-    # ===== 3. ВЫВОД ТОВАРОВ ЧЕРЕЗ ГЕТТЕР =====
-    print("\n3. ТОВАРЫ В КАТЕГОРИИ (ГЕТТЕР):")
-    print("-" * 60)
-    print(category1.products)
+    category_smartphones.add_product(smartphone3)
 
-    # ===== 4. ДОБАВЛЕНИЕ НОВОГО ТОВАРА =====
-    print("\n4. ДОБАВЛЕНИЕ НОВОГО ТОВАРА:")
-    print("-" * 60)
+    print(category_smartphones.products)
 
-    product4 = Product('55" QLED 4K', "Фоновая подсветка", 123000.0, 7)
-    category1.add_product(product4)
-    print(f"✓ Добавлен: {product4.name}")
-    print(f"  Всего товаров в категории: {category1.product_count}")
+    print(Category.product_count)
 
-    print("\n   Обновленный список товаров:")
-    print(category1.products)
-
-    # ===== 5. КЛАСС-МЕТОД NEW_PRODUCT =====
-    print("\n5. КЛАСС-МЕТОД NEW_PRODUCT (СОЗДАНИЕ ИЗ СЛОВАРЯ):")
-    print("-" * 60)
-
-    new_product_data = {
-        "name": "Samsung Galaxy S23 Ultra",
-        "description": "256GB, Серый цвет, 200MP камера",
-        "price": 180000.0,
-        "quantity": 5
-    }
-    new_product = Product.new_product(new_product_data)
-    print("✓ Товар создан через класс-метод new_product:")
-    print(f"   Название: {new_product.name}")
-    print(f"   Описание: {new_product.description}")
-    print(f"   Цена: {new_product.price} руб.")
-    print(f"   Количество: {new_product.quantity} шт.")
-
-    # ===== 6. ПРОВЕРКА ГЕТТЕРА И СЕТТЕРА ЦЕНЫ =====
-    print("\n6. ПРОВЕРКА ГЕТТЕРА И СЕТТЕРА ЦЕНЫ:")
-    print("-" * 60)
-
-    test_product = Product("Тестовый товар", "Для проверки цены", 1000.0, 1)
-    print(f"✓ Начальная цена: {test_product.price} руб.")
-
-    # Устанавливаем корректную цену
-    test_product.price = 1500.0
-    print(f"✓ Установлена новая цена (1500): {test_product.price} руб.")
-
-    # Пытаемся установить отрицательную цену
-    print("\n   Попытка установить отрицательную цену (-500):")
-    test_product.price = -500.0  # Должно вывести ошибку
-    print(f"   Цена после попытки: {test_product.price} руб. (не изменилась)")
-
-    # Пытаемся установить нулевую цену
-    print("\n   Попытка установить нулевую цену (0):")
-    test_product.price = 0  # Должно вывести ошибку
-    print(f"   Цена после попытки: {test_product.price} руб. (не изменилась)")
-
-    # ===== 7. СТАТИСТИКА =====
-    print("\n7. СТАТИСТИКА:")
-    print("-" * 60)
-    print(f"✓ Всего категорий: {Category.category_count}")
-    print(f"✓ Всего товаров: {Category.product_count}")
-
-    print("\n" + "=" * 60)
-    print("ПРОВЕРКА ЗАВЕРШЕНА УСПЕШНО! 🎉")
-    print("=" * 60)
+    try:
+        category_smartphones.add_product("Not a product")
+    except TypeError:
+        print("Возникла ошибка TypeError при добавлении не продукта")
+    else:
+        print("Не возникла ошибка TypeError при добавлении не продукта")
