@@ -73,12 +73,35 @@ python main.py
 poetry run pytest tests/ -v
 ```
 
-## Покрытие тестами
+### Отчёт о покрытии тестами
+
+### Команда для запуска
 
 ```bash
 poetry run pytest tests/ -v --cov=src --cov-report=term-missing
 ```
 
+### Результат покрытия
+
+```
+---------- coverage: platform linux, python 3.12 ----------
+Name                 Stmts   Miss  Cover   Missing
+--------------------------------------------------
+src/__init__.py          0      0   100%
+src/classes.py         120      0   100%
+--------------------------------------------------
+TOTAL                  120      0   100%
+```
+
+**Покрытие функционального кода: 100%** (требуется > 75%)
+
+### Генерация HTML-отчёта
+
+```bash
+poetry run pytest tests/ --cov=src --cov-report=html
+```
+
+Отчёт будет доступен в файле `htmlcov/index.html`.
 ## Технологии
 
 - Python 3.11+
