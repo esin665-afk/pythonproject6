@@ -18,8 +18,10 @@ class BaseProduct(ABC):
         """
         if price <= 0:
             raise ValueError("Цена товара должна быть больше 0")
-        if quantity < 0:
-            raise ValueError("Количество товара не может быть отрицательным")
+        if quantity <= 0:
+            raise ValueError(
+                "Товар с нулевым количеством не может быть добавлен"
+            )
 
         self.name = name
         self.description = description

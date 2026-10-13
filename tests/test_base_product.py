@@ -5,7 +5,7 @@
 import pytest
 
 from src.base_product import BaseProduct
-from src.classes import LawnGrass, Product, Smartphone
+from src import LawnGrass, Product, Smartphone
 
 
 def test_base_product_is_abstract():

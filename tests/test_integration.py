@@ -2,7 +2,7 @@
 Интеграционные тесты.
 """
 
-from src.classes import Category, Product
+from src import Category, Product
 
 
 def test_full_workflow():
@@ -16,7 +16,7 @@ def test_full_workflow():
         "Tablet, 30000.0 руб. Остаток: 5 шт."
     )
     assert category.products == expected
-    assert category.average_price() == 40000.0
+    assert category.middle_price() == 40000.0
     assert Category.product_count == 2
 
 

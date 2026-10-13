@@ -4,7 +4,7 @@
 
 import pytest
 
-from src.classes import Category, LawnGrass, Product, Smartphone
+from src import Category, LawnGrass, Product, Smartphone
 
 
 def test_add_product_works():

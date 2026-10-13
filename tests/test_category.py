@@ -2,9 +2,9 @@
 Тесты для класса Category.
 """
 
-import pytest
 
-from src.classes import Category, Product
+from src.category import Category
+from src.product import Product
 
 
 def test_category_initialization_without_products():
@@ -53,20 +53,19 @@ def test_category_add_product():
     assert Category.product_count == 1
 
 
-def test_category_average_price():
+def test_category_middle_price():
     """Тест расчета средней цены."""
     p1 = Product("P1", "D1", 100.0, 5)
     p2 = Product("P2", "D2", 200.0, 3)
     p3 = Product("P3", "D3", 300.0, 7)
     category = Category("Cat", "Desc", [p1, p2, p3])
-    assert category.average_price() == 200.0
+    assert category.middle_price() == 200.0
 
 
-def test_category_average_price_empty_raises_error():
-    """Тест: пустая категория вызывает ошибку."""
+def test_category_middle_price_empty_returns_zero():
+    """Тест: пустая категория возвращает 0."""
     category = Category("Empty", "Desc")
-    with pytest.raises(ValueError):
-        category.average_price()
+    assert category.middle_price() == 0
 
 
 def test_category_products_property():
