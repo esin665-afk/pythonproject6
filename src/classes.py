@@ -1,42 +1,33 @@
 """
 Модуль с основными классами для интернет-магазина.
-Содержит классы Product и Category для работы с товарами и категориями.
 """
 
 from typing import List, Optional
 
+from src.base_product import BaseProduct
+from src.mixin import ReprMixin
 
-class Product:
+
+class Product(ReprMixin, BaseProduct):  # ← Миксин ПЕРВЫМ в цепочке
     """
     Класс для представления товара.
+    Наследник BaseProduct с миксином ReprMixin.
     """
 
     def __init__(
         self, name: str, description: str, price: float, quantity: int
     ) -> None:
-        """
-        Инициализация объекта товара с проверкой данных.
-        """
-        if price <= 0:
-            raise ValueError("Цена товара должна быть больше 0")
-        if quantity < 0:
-            raise ValueError("Количество товара не может быть отрицательным")
+        """Инициализация товара."""
+        super().__init__(name, description, price, quantity)
 
-        self.name = name
-        self.description = description
-        self.__price = price
-        self.quantity = quantity
+    # ... остальные методы без изменений
 
     def __str__(self) -> str:
-        """
-        Строковое представление товара.
-        """
+        """Строковое представление товара."""
         return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
 
-    def __add__(self, other: "Product") -> float:
-        """
-        Магический метод сложения двух товаров.
-        """
+    def __add__(self, other: "BaseProduct") -> float:
+        """Магический метод сложения двух товаров одного класса."""
         if type(self) is not type(other):
             raise TypeError(
                 "Нельзя складывать товары разных классов: "
@@ -44,26 +35,9 @@ class Product:
             )
         return (self.price * self.quantity) + (other.price * other.quantity)
 
-    @property
-    def price(self) -> float:
-        """Геттер для получения цены товара."""
-        return self.__price
-
-    @price.setter
-    def price(self, value: float) -> None:
-        """
-        Сеттер для установки цены товара с проверкой.
-        """
-        if value <= 0:
-            print("Цена не должна быть нулевая или отрицательная")
-        else:
-            self.__price = value
-
     @classmethod
     def new_product(cls, product_data: dict) -> "Product":
-        """
-        Класс-метод для создания продукта из словаря с данными.
-        """
+        """Класс-метод для создания продукта из словаря."""
         name = product_data.get('name')
         description = product_data.get('description')
         price = product_data.get('price')
