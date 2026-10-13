@@ -4,7 +4,7 @@
 
 import pytest
 
-from src.classes import LawnGrass, Product, Smartphone
+from src import LawnGrass, Product, Smartphone
 
 
 def test_lawn_grass_initialization():

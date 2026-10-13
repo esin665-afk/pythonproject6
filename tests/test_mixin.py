@@ -2,7 +2,7 @@
 Тесты для класса-миксина ReprMixin.
 """
 
-from src.classes import LawnGrass, Product, Smartphone
+from src import LawnGrass, Product, Smartphone
 from src.mixin import ReprMixin
 
 

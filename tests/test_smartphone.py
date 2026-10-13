@@ -4,7 +4,8 @@
 
 import pytest
 
-from src.classes import Product, Smartphone
+from src.product import Product
+from src.smartphone import Smartphone
 
 
 def test_smartphone_initialization():

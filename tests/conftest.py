@@ -4,7 +4,7 @@
 
 import pytest
 
-from src.classes import Category
+from src.category import Category
 
 
 @pytest.fixture(autouse=True)
